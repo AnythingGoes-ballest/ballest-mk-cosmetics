@@ -1,0 +1,7 @@
+# Yoshi: green with a white belly and chin, big snout, eyes on top, red saddle, orange spikes and shoes.
+# Made from scratch by tools/make_models.py (6526 triangles). The game's clear ball is hidden: the
+# character is the whole ball, its head or body a sphere of the ball's size, kept upright and facing where
+# the ball goes.
+ball hidden
+group yoshi travel
+mesh yoshi.glb at=0.939,0.000,-50.000

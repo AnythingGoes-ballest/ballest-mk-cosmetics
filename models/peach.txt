@@ -1,0 +1,7 @@
+# Peach: gold crown with a ruby and sapphires, blonde hair, blue eyes, sapphire earrings, pink dress and brooch.
+# Made from scratch by tools/make_models.py (9536 triangles). The game's clear ball is hidden: the
+# character is the whole ball, its head or body a sphere of the ball's size, kept upright and facing where
+# the ball goes.
+ball hidden
+group peach travel
+mesh peach.glb at=-3.816,0.000,-50.000

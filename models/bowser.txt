@@ -1,0 +1,7 @@
+# Bowser: spiked green shell with a cream rim, horns, red mane and brows, red eyes, fangs, spiked cuffs.
+# Made from scratch by tools/make_models.py (10172 triangles). The game's clear ball is hidden: the
+# character is the whole ball, its head or body a sphere of the ball's size, kept upright and facing where
+# the ball goes.
+ball hidden
+group bowser travel
+mesh bowser.glb at=-7.949,-1.650,-50.000

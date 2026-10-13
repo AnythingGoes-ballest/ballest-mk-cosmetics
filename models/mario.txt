@@ -1,0 +1,7 @@
+# Mario: red cap with his M, moustache, big nose, blue eyes, brown hair, red shirt and blue overalls.
+# Made from scratch by tools/make_models.py (7862 triangles). The game's clear ball is hidden: the
+# character is the whole ball, its head or body a sphere of the ball's size, kept upright and facing where
+# the ball goes.
+ball hidden
+group mario travel
+mesh mario.glb at=3.636,0.000,-51.131

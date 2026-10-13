@@ -1,0 +1,11 @@
+[meta]
+name = "MK Characters"
+version = "0.1.0"
+author = "AnythingGoes"
+description = "Mario, Yoshi, Peach and Bowser balls in their Mario Kart Wii colours, made from scratch. Local cosmetics: worn on your own ball only."
+min_host = "0.23.2"
+dependencies = ["cosmetic-kit"]
+
+[script]
+files = ["main.as"]
+assets = ["previews/*.png", "models/*.txt", "models/*.glb"]

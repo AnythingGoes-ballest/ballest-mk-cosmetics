@@ -360,8 +360,16 @@ def to_gltf(P):
 
 
 def write_glb(m, path):
+    """One mesh as a .glb (a single node, "character")."""
+    write_glb_nodes([("character", m)], path)
+
+
+def write_glb_nodes(named, path):
+    """Meshes as one .glb, each a node of its own (by name), sharing one list of materials: a character's parts, each
+    picked by a model text's `mesh <file> node=<name>` (host 0.27.0)."""
     bin_ = bytearray()
-    views, accessors, prims, materials = [], [], [], []
+    views, accessors, materials, meshes, nodes = [], [], [], [], []
+    mat_index = {}
 
     def view(data, target):
         while len(bin_) % 4:
@@ -370,38 +378,41 @@ def write_glb(m, path):
         bin_.extend(data)
         return len(views) - 1
 
-    for name, spec in m.materials.items():
-        if name not in m.parts:
-            continue
-        P, N, I = m.merged(name)
-        Pg = to_gltf(P).astype(np.float32)
-        Ng = (to_gltf(N) * 100).astype(np.float32)
-        # The axis change is a mirror (determinant -1), so the winding is reversed to stay counter-clockwise outward.
-        Ig = I[:, ::-1].astype(np.uint32)
-        vol = np.sum(np.einsum("ij,ij->i", Pg[Ig[:, 0]], np.cross(Pg[Ig[:, 1]], Pg[Ig[:, 2]])))
-        pv = view(Pg.tobytes(), 34962)
-        accessors.append({"bufferView": pv, "componentType": 5126, "count": len(Pg), "type": "VEC3",
-                          "min": Pg.min(0).tolist(), "max": Pg.max(0).tolist()})
-        pa = len(accessors) - 1
-        nvw = view(Ng.tobytes(), 34962)
-        accessors.append({"bufferView": nvw, "componentType": 5126, "count": len(Ng), "type": "VEC3"})
-        na = len(accessors) - 1
-        iv = view(Ig.reshape(-1).tobytes(), 34963)
-        accessors.append({"bufferView": iv, "componentType": 5125, "count": int(Ig.size), "type": "SCALAR"})
-        ia = len(accessors) - 1
-        lin = srgb_to_linear(hex_rgb(spec["colour"]))
-        mat = {"name": name, "pbrMetallicRoughness": {"baseColorFactor": [*map(float, lin), 1.0],
-                                                      "metallicFactor": float(spec.get("metal", 0.0)),
-                                                      "roughnessFactor": float(spec.get("rough", 0.5))}}
-        if spec.get("glow"):
-            mat["emissiveFactor"] = [*map(float, lin)]
-        materials.append(mat)
-        prims.append({"attributes": {"POSITION": pa, "NORMAL": na}, "indices": ia, "material": len(materials) - 1})
-        spec["_volume"] = float(vol)
+    for node_name, m in named:
+        prims = []
+        for name, spec in m.materials.items():
+            if name not in m.parts:
+                continue
+            P, N, I = m.merged(name)
+            Pg = to_gltf(P).astype(np.float32)
+            Ng = (to_gltf(N) * 100).astype(np.float32)
+            # The axis change is a mirror (determinant -1), so the winding is reversed to stay counter-clockwise outward.
+            Ig = I[:, ::-1].astype(np.uint32)
+            pv = view(Pg.tobytes(), 34962)
+            accessors.append({"bufferView": pv, "componentType": 5126, "count": len(Pg), "type": "VEC3",
+                              "min": Pg.min(0).tolist(), "max": Pg.max(0).tolist()})
+            pa = len(accessors) - 1
+            nvw = view(Ng.tobytes(), 34962)
+            accessors.append({"bufferView": nvw, "componentType": 5126, "count": len(Ng), "type": "VEC3"})
+            na = len(accessors) - 1
+            iv = view(Ig.reshape(-1).tobytes(), 34963)
+            accessors.append({"bufferView": iv, "componentType": 5125, "count": int(Ig.size), "type": "SCALAR"})
+            ia = len(accessors) - 1
+            if name not in mat_index:
+                lin = srgb_to_linear(hex_rgb(spec["colour"]))
+                mat = {"name": name, "pbrMetallicRoughness": {"baseColorFactor": [*map(float, lin), 1.0],
+                                                              "metallicFactor": float(spec.get("metal", 0.0)),
+                                                              "roughnessFactor": float(spec.get("rough", 0.5))}}
+                if spec.get("glow"):
+                    mat["emissiveFactor"] = [*map(float, lin)]
+                materials.append(mat)
+                mat_index[name] = len(materials) - 1
+            prims.append({"attributes": {"POSITION": pa, "NORMAL": na}, "indices": ia, "material": mat_index[name]})
+        meshes.append({"name": node_name, "primitives": prims})
+        nodes.append({"mesh": len(meshes) - 1, "name": node_name})
     gltf = {"asset": {"version": "2.0", "generator": "ballest-mk-cosmetics make_models.py"},
-            "scene": 0, "scenes": [{"nodes": [0]}], "nodes": [{"mesh": 0, "name": "character"}],
-            "meshes": [{"primitives": prims}], "materials": materials, "accessors": accessors,
-            "bufferViews": views, "buffers": [{"byteLength": len(bin_)}]}
+            "scene": 0, "scenes": [{"nodes": list(range(len(nodes)))}], "nodes": nodes, "meshes": meshes,
+            "materials": materials, "accessors": accessors, "bufferViews": views, "buffers": [{"byteLength": len(bin_)}]}
     js = json.dumps(gltf, separators=(",", ":")).encode()
     js += b" " * (-len(js) % 4)
     while len(bin_) % 4:

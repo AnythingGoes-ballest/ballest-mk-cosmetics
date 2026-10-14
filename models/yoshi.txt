@@ -1,7 +1,374 @@
 # Yoshi: green with a white belly and chin, big snout, eyes on top, red saddle, orange spikes and shoes.
-# Made from scratch by tools/make_models.py (6526 triangles). The game's clear ball is hidden: the
-# character is the whole ball, its head or body a sphere of the ball's size, kept upright and facing where
-# the ball goes.
+# Made from scratch by tools/make_models.py (8262 triangles in 9 parts). The game's
+# clear ball is hidden: the character is the whole ball, its head or body a sphere of the ball's size, kept
+# upright and facing where the ball goes. It leans into the run and bounces each step, twists, swings its
+# arms and legs, and now and then does a move: picked at random for what the ball is doing (moves, below).
+# Needs host 0.27.0 (move, key, lean).
+tempo rate=0.6 run=0.25 max=3.2 calm=0.2 full=8
 ball hidden
 group yoshi travel
-mesh yoshi.glb at=0.939,0.000,-50.000
+group lean on=yoshi pivot=0,0,-50 bob=3.5 lean=12
+group body on=lean swing=z angle=8 phase=90
+mesh yoshi.glb node=body at=-3.757,0.000,-50.000
+group head on=body pivot=12,0,36 swing=x angle=5 phase=90
+mesh yoshi.glb node=head at=24.555,0.000,29.000
+group tongue on=head pivot=30,0,50.5
+mesh yoshi.glb node=tongue at=42.350,0.000,47.500
+group armL on=body pivot=0,-36,8 swing=y angle=45 phase=180
+mesh yoshi.glb node=armL at=15.250,-49.024,-12.000
+group armR on=body pivot=0,36,8 swing=y angle=45
+mesh yoshi.glb node=armR at=15.250,49.024,-12.000
+group footL on=body pivot=30,-22,10 swing=y angle=30
+mesh yoshi.glb node=footL at=30.000,-22.000,-47.000
+group footR on=body pivot=30,22,10 swing=y angle=30 phase=180
+mesh yoshi.glb node=footR at=30.000,22.000,-47.000
+group tail on=body pivot=-44,0,-20 swing=z angle=22 phase=90
+mesh yoshi.glb node=tail at=-52.488,0.000,-33.483
+group egg on=body pivot=-58,0,-30 drop=land push=-260,0,200 life=4 max=5
+mesh yoshi.glb node=egg at=-58.209,0.201,-43.500
+
+moves gap=0.4,1.6
+move lookaround when=idle weight=1.2
+key 0 body
+key 0.6 body rot=0,10,0
+key 2 body rot=0,-10,0
+key 3.3 body
+key 0 head
+key 0.6 head rot=0,40,0
+key 1.3 head rot=0,40,0
+key 2 head rot=0,-40,0
+key 2.7 head rot=0,-40,0
+key 3.3 head
+move hop when=idle weight=0.7
+key 0 armL
+key 0.4 armL rot=0,0,62.57 at=0,-5.5,4.583 swing=0
+key 0.8 armL
+key 0 armR
+key 0.4 armR rot=0,0,-62.57 at=0,5.5,4.583 swing=0
+key 0.8 armR
+key 0 lean
+key 0.15 lean at=0,0,-3 swing=0
+key 0.4 lean at=0,0,16 swing=0
+key 0.65 lean swing=0
+key 0.75 lean at=0,0,-2.5 swing=0
+key 0.95 lean
+move squash when=land blend=0.08
+key 0 armL
+key 0.1 armL rot=0,0,47.57 at=0,-4,3.333 swing=0
+key 0.5 armL
+key 0 armR
+key 0.1 armR rot=0,0,-47.57 at=0,4,3.333 swing=0
+key 0.5 armR
+key 0 lean
+key 0.1 lean rot=-6,0,0 at=0,0,-6 swing=0
+key 0.35 lean at=0,0,2 swing=0
+key 0.55 lean
+move cheer when=jump blend=0.1
+key 0 armL
+key 0.2 armL rot=0,0,112.6 at=0,-10.5,8.75 swing=0
+key 0.6 armL rot=0,0,102.6 at=0,-9.5,7.917 swing=0
+key 0.9 armL
+key 0 armR
+key 0.2 armR rot=0,0,-112.6 at=0,10.5,8.75 swing=0
+key 0.6 armR rot=0,0,-102.6 at=0,9.5,7.917 swing=0
+key 0.9 armR
+key 0 lean
+key 0.25 lean rot=8,0,0
+key 0.9 lean
+move flail when=air blend=0.2
+key 0 armL
+key 0.15 armL rot=35,0,97.57 at=0,-9,7.5 swing=0
+key 0.35 armL rot=-35,0,52.57 at=0,-4.5,3.75 swing=0
+key 0.55 armL rot=35,0,97.57 at=0,-9,7.5 swing=0
+key 0.75 armL rot=-35,0,52.57 at=0,-4.5,3.75 swing=0
+key 0.95 armL rot=35,0,97.57 at=0,-9,7.5 swing=0
+key 1.15 armL rot=-35,0,52.57 at=0,-4.5,3.75 swing=0
+key 1.35 armL rot=35,0,97.57 at=0,-9,7.5 swing=0
+key 1.5 armL
+key 0 armR
+key 0.15 armR rot=-35,0,-52.57 at=0,4.5,3.75 swing=0
+key 0.35 armR rot=35,0,-97.57 at=0,9,7.5 swing=0
+key 0.55 armR rot=-35,0,-52.57 at=0,4.5,3.75 swing=0
+key 0.75 armR rot=35,0,-97.57 at=0,9,7.5 swing=0
+key 0.95 armR rot=-35,0,-52.57 at=0,4.5,3.75 swing=0
+key 1.15 armR rot=35,0,-97.57 at=0,9,7.5 swing=0
+key 1.35 armR rot=-35,0,-52.57 at=0,4.5,3.75 swing=0
+key 1.5 armR
+key 0 footL
+key 0.1 footL rot=35,0,0 swing=0
+key 0.2625 footL rot=-25,0,0 swing=0
+key 0.425 footL rot=35,0,0 swing=0
+key 0.5875 footL rot=-25,0,0 swing=0
+key 0.75 footL rot=35,0,0 swing=0
+key 0.9125 footL rot=-25,0,0 swing=0
+key 1.075 footL rot=35,0,0 swing=0
+key 1.2375 footL rot=-25,0,0 swing=0
+key 1.4 footL rot=35,0,0 swing=0
+key 1.5 footL
+key 0 footR
+key 0.1 footR rot=-25,0,0 swing=0
+key 0.2625 footR rot=35,0,0 swing=0
+key 0.425 footR rot=-25,0,0 swing=0
+key 0.5875 footR rot=35,0,0 swing=0
+key 0.75 footR rot=-25,0,0 swing=0
+key 0.9125 footR rot=35,0,0 swing=0
+key 1.075 footR rot=-25,0,0 swing=0
+key 1.2375 footR rot=35,0,0 swing=0
+key 1.4 footR rot=-25,0,0 swing=0
+key 1.5 footR
+move flutter when=run weight=1.3 blend=0.15
+key 0 armL
+key 0.3 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 1.3 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 1.6 armL
+key 0 armR
+key 0.3 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 1.3 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 1.6 armR
+key 0 footL
+key 0.12 footL rot=45,0,0 swing=0
+key 0.215 footL rot=-20,0,0 swing=0
+key 0.31 footL rot=45,0,0 swing=0
+key 0.405 footL rot=-20,0,0 swing=0
+key 0.5 footL rot=45,0,0 swing=0
+key 0.595 footL rot=-20,0,0 swing=0
+key 0.69 footL rot=45,0,0 swing=0
+key 0.785 footL rot=-20,0,0 swing=0
+key 0.88 footL rot=45,0,0 swing=0
+key 0.975 footL rot=-20,0,0 swing=0
+key 1.07 footL rot=45,0,0 swing=0
+key 1.165 footL rot=-20,0,0 swing=0
+key 1.26 footL rot=45,0,0 swing=0
+key 1.355 footL rot=-20,0,0 swing=0
+key 1.45 footL rot=45,0,0 swing=0
+key 1.6 footL
+key 0 footR
+key 0.12 footR rot=-20,0,0 swing=0
+key 0.215 footR rot=45,0,0 swing=0
+key 0.31 footR rot=-20,0,0 swing=0
+key 0.405 footR rot=45,0,0 swing=0
+key 0.5 footR rot=-20,0,0 swing=0
+key 0.595 footR rot=45,0,0 swing=0
+key 0.69 footR rot=-20,0,0 swing=0
+key 0.785 footR rot=45,0,0 swing=0
+key 0.88 footR rot=-20,0,0 swing=0
+key 0.975 footR rot=45,0,0 swing=0
+key 1.07 footR rot=-20,0,0 swing=0
+key 1.165 footR rot=45,0,0 swing=0
+key 1.26 footR rot=-20,0,0 swing=0
+key 1.355 footR rot=45,0,0 swing=0
+key 1.45 footR rot=-20,0,0 swing=0
+key 1.6 footR
+key 0 head
+key 0.4 head rot=14,0,0
+key 1.2 head rot=14,0,0
+key 1.6 head
+key 0 lean
+key 0.3 lean rot=6,0,0 at=0,0,14 swing=0
+key 1.25 lean rot=6,0,0 at=0,0,16 swing=0
+key 1.6 lean
+move flutterjump when=jump blend=0.15
+key 0 armL
+key 0.3 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 0.8 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 1.1 armL
+key 0 armR
+key 0.3 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 0.8 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 1.1 armR
+key 0 footL
+key 0.12 footL rot=45,0,0 swing=0
+key 0.22375 footL rot=-20,0,0 swing=0
+key 0.3275 footL rot=45,0,0 swing=0
+key 0.43125 footL rot=-20,0,0 swing=0
+key 0.535 footL rot=45,0,0 swing=0
+key 0.63875 footL rot=-20,0,0 swing=0
+key 0.7425 footL rot=45,0,0 swing=0
+key 0.84625 footL rot=-20,0,0 swing=0
+key 0.95 footL rot=45,0,0 swing=0
+key 1.1 footL
+key 0 footR
+key 0.12 footR rot=-20,0,0 swing=0
+key 0.22375 footR rot=45,0,0 swing=0
+key 0.3275 footR rot=-20,0,0 swing=0
+key 0.43125 footR rot=45,0,0 swing=0
+key 0.535 footR rot=-20,0,0 swing=0
+key 0.63875 footR rot=45,0,0 swing=0
+key 0.7425 footR rot=-20,0,0 swing=0
+key 0.84625 footR rot=45,0,0 swing=0
+key 0.95 footR rot=-20,0,0 swing=0
+key 1.1 footR
+key 0 head
+key 0.4 head rot=14,0,0
+key 0.7 head rot=14,0,0
+key 1.1 head
+key 0 lean
+key 0.3 lean rot=6,0,0 at=0,0,4 swing=0
+key 0.75 lean rot=6,0,0 at=0,0,4 swing=0
+key 1.1 lean
+move flutterair when=air weight=2 blend=0.15
+key 0 armL
+key 0.3 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 1.3 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 1.6 armL
+key 0 armR
+key 0.3 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 1.3 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 1.6 armR
+key 0 footL
+key 0.12 footL rot=45,0,0 swing=0
+key 0.215 footL rot=-20,0,0 swing=0
+key 0.31 footL rot=45,0,0 swing=0
+key 0.405 footL rot=-20,0,0 swing=0
+key 0.5 footL rot=45,0,0 swing=0
+key 0.595 footL rot=-20,0,0 swing=0
+key 0.69 footL rot=45,0,0 swing=0
+key 0.785 footL rot=-20,0,0 swing=0
+key 0.88 footL rot=45,0,0 swing=0
+key 0.975 footL rot=-20,0,0 swing=0
+key 1.07 footL rot=45,0,0 swing=0
+key 1.165 footL rot=-20,0,0 swing=0
+key 1.26 footL rot=45,0,0 swing=0
+key 1.355 footL rot=-20,0,0 swing=0
+key 1.45 footL rot=45,0,0 swing=0
+key 1.6 footL
+key 0 footR
+key 0.12 footR rot=-20,0,0 swing=0
+key 0.215 footR rot=45,0,0 swing=0
+key 0.31 footR rot=-20,0,0 swing=0
+key 0.405 footR rot=45,0,0 swing=0
+key 0.5 footR rot=-20,0,0 swing=0
+key 0.595 footR rot=45,0,0 swing=0
+key 0.69 footR rot=-20,0,0 swing=0
+key 0.785 footR rot=45,0,0 swing=0
+key 0.88 footR rot=-20,0,0 swing=0
+key 0.975 footR rot=45,0,0 swing=0
+key 1.07 footR rot=-20,0,0 swing=0
+key 1.165 footR rot=45,0,0 swing=0
+key 1.26 footR rot=-20,0,0 swing=0
+key 1.355 footR rot=45,0,0 swing=0
+key 1.45 footR rot=-20,0,0 swing=0
+key 1.6 footR
+key 0 head
+key 0.4 head rot=14,0,0
+key 1.2 head rot=14,0,0
+key 1.6 head
+key 0 lean
+key 0.3 lean rot=6,0,0 at=0,0,4 swing=0
+key 1.25 lean rot=6,0,0 at=0,0,4 swing=0
+key 1.6 lean
+move tongue when=run weight=1.1 blend=0.15
+key 0 head
+key 0.25 head rot=-6,0,0
+key 0.55 head rot=-10,0,0
+key 1.2 head
+key 0 tongue
+key 0.3 tongue at=2,0,0
+key 0.5 tongue rot=-8,0,0 at=40,0,-2
+key 0.65 tongue rot=-8,0,0 at=40,0,-2
+key 0.85 tongue at=2,0,0
+key 0.95 tongue
+move lick when=idle blend=0.15
+key 0 head
+key 0.25 head rot=-6,0,0
+key 0.55 head rot=-10,0,0
+key 1.2 head
+key 0 tongue
+key 0.3 tongue at=2,0,0
+key 0.5 tongue rot=-8,0,0 at=40,0,-2
+key 0.65 tongue rot=-8,0,0 at=40,0,-2
+key 0.85 tongue at=2,0,0
+key 0.95 tongue
+move wag when=run
+key 0 body
+key 0.2 body rot=0,-6,0
+key 0.385714 body rot=0,6,0
+key 0.571429 body rot=0,-6,0
+key 0.757143 body rot=0,6,0
+key 0.942857 body rot=0,-6,0
+key 1.12857 body rot=0,6,0
+key 1.31429 body rot=0,-6,0
+key 1.5 body rot=0,6,0
+key 1.7 body
+key 0 tail
+key 0.2 tail rot=0,40,0 swing=0
+key 0.385714 tail rot=0,-40,0 swing=0
+key 0.571429 tail rot=0,40,0 swing=0
+key 0.757143 tail rot=0,-40,0 swing=0
+key 0.942857 tail rot=0,40,0 swing=0
+key 1.12857 tail rot=0,-40,0 swing=0
+key 1.31429 tail rot=0,40,0 swing=0
+key 1.5 tail rot=0,-40,0 swing=0
+key 1.7 tail
+move wagidle when=idle
+key 0 body
+key 0.2 body rot=0,-6,0
+key 0.385714 body rot=0,6,0
+key 0.571429 body rot=0,-6,0
+key 0.757143 body rot=0,6,0
+key 0.942857 body rot=0,-6,0
+key 1.12857 body rot=0,6,0
+key 1.31429 body rot=0,-6,0
+key 1.5 body rot=0,6,0
+key 1.7 body
+key 0 tail
+key 0.2 tail rot=0,40,0 swing=0
+key 0.385714 tail rot=0,-40,0 swing=0
+key 0.571429 tail rot=0,40,0 swing=0
+key 0.757143 tail rot=0,-40,0 swing=0
+key 0.942857 tail rot=0,40,0 swing=0
+key 1.12857 tail rot=0,-40,0 swing=0
+key 1.31429 tail rot=0,40,0 swing=0
+key 1.5 tail rot=0,-40,0 swing=0
+key 1.7 tail
+move yoshi when=run weight=0.9
+key 0 armL
+key 0.3 armL rot=0,0,102.6 at=0,-9.5,7.917 swing=0
+key 0.75 armL rot=0,0,92.57 at=0,-8.5,7.083 swing=0
+key 1.1 armL
+key 0 armR
+key 0.3 armR rot=0,0,-102.6 at=0,9.5,7.917 swing=0
+key 0.75 armR rot=0,0,-92.57 at=0,8.5,7.083 swing=0
+key 1.1 armR
+key 0 head
+key 0.3 head rot=22,0,0
+key 0.75 head rot=22,0,0
+key 1.1 head
+move spin when=run weight=0.6 blend=0
+key 0 armL
+key 0.33 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 0.77 armL rot=0,0,57.57 at=0,-5,4.167 swing=0
+key 1.1 armL
+key 0 armR
+key 0.33 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 0.77 armR rot=0,0,-57.57 at=0,5,4.167 swing=0
+key 1.1 armR
+key 0 lean
+key 0.165 lean rot=0,40,0 at=0,0,6
+key 0.55 lean rot=0,180,0 at=0,0,10
+key 0.935 lean rot=0,320,0 at=0,0,5
+key 1.1 lean rot=0,360,0
+move stretch when=idle weight=0.8
+key 0 armL
+key 0.7 armL rot=0,0,117.6 at=0,-11,9.167 swing=0
+key 1.5 armL rot=0,0,125.6 at=0,-11.8,9.833 swing=0
+key 2.2 armL
+key 0 armR
+key 0.7 armR rot=0,0,-117.6 at=0,11,9.167 swing=0
+key 1.5 armR rot=0,0,-125.6 at=0,11.8,9.833 swing=0
+key 2.2 armR
+key 0 head
+key 0.8 head rot=18,0,0
+key 1.5 head rot=18,0,0
+key 2.2 head
+move tap when=idle weight=0.8
+key 0 footR
+key 0.25 footR rot=-10,0,0 at=0,0,5 swing=0
+key 0.464286 footR swing=0
+key 0.678571 footR rot=-10,0,0 at=0,0,5 swing=0
+key 0.892857 footR swing=0
+key 1.10714 footR rot=-10,0,0 at=0,0,5 swing=0
+key 1.32143 footR swing=0
+key 1.53571 footR rot=-10,0,0 at=0,0,5 swing=0
+key 1.75 footR swing=0
+key 2 footR

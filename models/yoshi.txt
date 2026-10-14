@@ -24,7 +24,7 @@ group footR on=body pivot=30,22,10 swing=y angle=30 phase=180
 mesh yoshi.glb node=footR at=30.000,22.000,-47.000
 group tail on=body pivot=-44,0,-20 swing=z angle=22 phase=90
 mesh yoshi.glb node=tail at=-52.488,0.000,-33.483
-group egg on=body pivot=-58,0,-30 drop=land push=-260,0,200 life=4 max=5
+group egg on=body pivot=-58,0,-30 drop=land push=-160,0,380 life=4 max=5 carry=0.85
 mesh yoshi.glb node=egg at=-58.209,0.201,-43.500
 
 moves gap=0.4,1.6

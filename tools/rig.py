@@ -125,11 +125,11 @@ class Rig:
         self.arm_float = (0.0, 0.0)
 
     def group(self, name, on=None, pivot=(0, 0, 0), travel=False, mesh=True, swing=None, angle=0, phase=0, bob=0,
-              lean=0, drop=None, push=None, life=None, most=None):
+              lean=0, drop=None, push=None, life=None, most=None, carry=None):
         m = Mesh(self.materials) if mesh else None
         self.groups[name] = dict(on=on, pivot=np.array(pivot, float), travel=travel, mesh=m, swing=swing,
                                  angle=angle, phase=phase, bob=bob, lean=lean, drop=drop, push=push, life=life,
-                                 most=most)
+                                 most=most, carry=carry)
         return m
 
     def move(self, *a, **k):
@@ -217,6 +217,8 @@ class Rig:
                     w.append(f"life={g['life']:g}")
                 if g["most"] is not None:
                     w.append(f"max={g['most']}")
+                if g["carry"] is not None:
+                    w.append(f"carry={g['carry']:g}")
             L.append(" ".join(w))
             m = g["mesh"]
             if m is not None and m.parts:

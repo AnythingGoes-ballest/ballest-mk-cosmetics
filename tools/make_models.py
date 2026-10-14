@@ -535,7 +535,7 @@ def yoshi():
     # his egg (white with green spots), laid from behind him at every landing: it pops out backward, rolls to a stop,
     # lies there 4 seconds and shrinks away; at most 5 at once (host 0.27.0 "drop")
     egg_at = np.array([-58.0, 0, -30])
-    e = R.group("egg", on="body", pivot=tuple(egg_at), drop="land", push=(-260, 0, 200), life=4, most=5)
+    e = R.group("egg", on="body", pivot=tuple(egg_at), drop="land", push=(-160, 0, 380), life=4, most=5, carry=0.85)
     ellipsoid(e, "white", egg_at, (11.0, 11.0, 13.5), nu=10, nv=18)
     for el, az, r in ((35, 20, 4.2), (10, 100, 4.6), (-20, 200, 4.4), (15, 250, 3.8), (-35, 320, 3.6), (50, 160, 3.4),
                       (-5, 30, 3.2), (-50, 120, 3.4)):
